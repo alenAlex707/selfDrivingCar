@@ -91,9 +91,10 @@ public:
     for (int i = 0; i < sensorCount; i++)
     {
       float sensorAngle = (angle + sensorAngles[i]) * DEG2RAD;
+      Vector2 sensorStart = {x, y};
       Vector2 sensorEnd = {x + cos(sensorAngle) * sensorLength, y + sin(sensorAngle) * sensorLength};
 
-      DrawLine(x, y, sensorEnd.x, sensorEnd.y, YELLOW);
+      DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
     }
   }
 };
