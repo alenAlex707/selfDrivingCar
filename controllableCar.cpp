@@ -39,8 +39,8 @@ public:
         acceleration = 2500.0f;
         retardation = -2.0f;
 
-        width = 80;
-        height = 40;
+        width = 40;
+        height = 20;
         origin = {width / 2, height / 2};
     }
 
@@ -83,10 +83,10 @@ public:
 
 int main()
 {
-    InitWindow(1600, 900, "test window");
+    InitWindow(1920, 1080, "test window");
     SetTargetFPS(60);
 
-    Car car(800, 450);
+    Car car(960, 540);
     while (!WindowShouldClose())
     {
         float dt = GetFrameTime();
