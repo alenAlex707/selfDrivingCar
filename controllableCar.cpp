@@ -5,6 +5,12 @@
 
 using namespace std;
 
+struct Wall
+{
+  Vector2 a;
+  Vector2 b;
+};
+
 Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd)
 {
   Vector2 d1 = {(wall.b.x - wall.a.x), (wall.b.y - wall.a.y)};
@@ -24,7 +30,6 @@ Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd)
 
   return {intersection};
 }
-
 bool buttonClicked(Rectangle rec)
 {
   Vector2 mouse = GetMousePosition();
