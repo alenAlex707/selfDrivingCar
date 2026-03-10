@@ -187,6 +187,10 @@ int main()
       DrawLineV(path[i], path[i + 1], WHITE);
       DrawCircle(path[i].x, path[i].y, 5, WHITE);
     }
+    if (trackSet)
+    {
+      DrawCircle(path[path.size() - 1].x, path[path.size() - 1].y, 5, WHITE);
+    }
 
     // draw car
     car.Draw();
@@ -205,10 +209,11 @@ int main()
       DrawRectangleRec(setTrackBtn, DARKGRAY);
       DrawText("Set Track", 1755, 1005, 20, BLACK);
     }
-    if (buttonClicked(setTrackBtn) && trackSet == false)
+    if (buttonClicked(setTrackBtn) && trackSet == false && path.size() != 0)
     {
       trackSet = true;
       cout << "clicked" << endl;
+
       for (size_t i = 0; i + 1 < path.size(); i++)
       {
         walls.push_back({path[i], path[i + 1]});
