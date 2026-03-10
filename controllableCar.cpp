@@ -30,6 +30,7 @@ Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd)
 
   return {intersection};
 }
+
 bool buttonClicked(Rectangle rec)
 {
   Vector2 mouse = GetMousePosition();
@@ -153,8 +154,10 @@ int main()
   Car car(960, 540);
 
   vector<Vector2> path;
+  vector<Wall> walls;
 
   Rectangle setTrackBtn = {1750, 1000, 120, 40};
+  bool trackSet = false;
 
   while (!WindowShouldClose())
   {
@@ -171,6 +174,8 @@ int main()
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
     {
       path.clear();
+      walls.clear();
+      trackSet = false;
     }
 
     BeginDrawing();
@@ -200,9 +205,19 @@ int main()
       DrawRectangleRec(setTrackBtn, DARKGRAY);
       DrawText("Set Track", 1755, 1005, 20, BLACK);
     }
-    if (buttonClicked(setTrackBtn))
+    if (buttonClicked(setTrackBtn) && trackSet == false)
     {
+      trackSet = true;
       cout << "clicked" << endl;
+      for (size_t i = 0; i + 1 < path.size(); i++)
+      {
+        walls.push_back({path[i], path[i + 1]});
+      }
+
+      for (Wall k : walls)
+      {
+        cout << k.a.x << "," << k.a.y << "  " << k.b.x << "," << k.b.y << endl;
+      }
     }
     EndDrawing();
   }
