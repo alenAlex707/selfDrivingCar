@@ -26,9 +26,10 @@ Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd)
   {
     intersection.x = wall.a.x + t * d1.x;
     intersection.y = wall.a.y + t * d1.y;
+    return intersection;
   }
 
-  return {intersection};
+  return {-1, -1};
 }
 
 bool buttonClicked(Rectangle rec)
@@ -67,8 +68,8 @@ public:
   Sensor()
   {
     sensorLength = 200;
-    sensorCount = 5;
     sensorAngles = {-45, -20, 0, 20, 45};
+    sensorCount = sensorAngles.size();
   }
 
   void UpdateVal(float x, float y, float theta, const vector<Wall> &walls)
@@ -80,21 +81,30 @@ public:
     this->walls = walls;
   }
 
-  void DrawSensor()
+  void DrawSensor(bool trackSet)
   {
-    for (int i = 0; i < sensorCount; i++)
+    for (int i = 0; i < sensorAngles.size(); i++)
     {
       Vector2 intersection;
       float sensorAngle = (carAngle + sensorAngles[i]) * DEG2RAD;
       Vector2 sensorStart = {carX, carY};
       Vector2 sensorEnd = {carX + cos(sensorAngle) * sensorLength, carY + sin(sensorAngle) * sensorLength};
 
-      /*if (walls.size() != 0)
+      if (trackSet)
       {
         intersection = getIntersection(walls[0], sensorStart, sensorEnd);
-        cout << "INTERSECTION POINTS: " << intersection.x << "," << intersection.y << endl;
-      }*/
-      DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
+        printf("INTERSECTION: %.2f, %.2f \n", intersection.x, intersection.y);
+        if (intersection.x != -1 && intersection.y != -1)
+        {
+          DrawLine(sensorStart.x, sensorStart.y, intersection.x, intersection.y, YELLOW);
+        }
+        else
+        {
+          DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
+        }
+      }
+      if (!trackSet)
+        DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
     }
   }
 };
@@ -171,14 +181,14 @@ public:
     sensor.UpdateVal(x, y, angle, walls);
   }
 
-  void Draw()
+  void Draw(bool trackSet)
   {
     Rectangle rect = {x, y, width, height};
     DrawRectanglePro(rect, origin, angle, RED);
     rect.x = x;
     rect.y = y;
 
-    sensor.DrawSensor();
+    sensor.DrawSensor(trackSet);
   }
 };
 
@@ -230,7 +240,7 @@ int main()
     }
 
     // draw car
-    car.Draw();
+    car.Draw(trackSet);
 
     // HUD
     DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
