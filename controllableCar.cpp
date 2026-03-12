@@ -11,6 +11,11 @@ struct Wall
   Vector2 b;
 };
 
+float getDistance(Vector2 a, Vector2 b)
+{
+  return sqrt(pow((b.x - a.x), 2) + pow((b.y - a.y), 2));
+}
+
 Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd)
 {
   Vector2 d1 = {(wall.b.x - wall.a.x), (wall.b.y - wall.a.y)};
@@ -90,21 +95,45 @@ public:
       Vector2 sensorStart = {carX, carY};
       Vector2 sensorEnd = {carX + cos(sensorAngle) * sensorLength, carY + sin(sensorAngle) * sensorLength};
 
-      if (trackSet)
+      float closestDist = INFINITY;
+      Vector2 closestPoint = sensorEnd;
+      bool hit = false;
+
+      for (int j = 0; j < walls.size(); j++)
       {
-        intersection = getIntersection(walls[0], sensorStart, sensorEnd);
-        printf("INTERSECTION: %.2f, %.2f \n", intersection.x, intersection.y);
+        intersection = getIntersection(walls[j], sensorStart, sensorEnd);
+
+        // if hit
         if (intersection.x != -1 && intersection.y != -1)
         {
-          DrawLine(sensorStart.x, sensorStart.y, intersection.x, intersection.y, YELLOW);
+          float distance = getDistance(sensorStart, intersection);
+          if (distance < closestDist)
+          {
+            closestDist = distance;
+            closestPoint = intersection;
+            hit = true;
+            printf("INTERSECTION sensor %d: %.2f, %.2f \n", i + 1, intersection.x, intersection.y);
+          }
+        }
+      }
+      if (trackSet)
+      {
+
+        if (hit)
+        {
+          DrawLineV(sensorStart, closestPoint, RED);
         }
         else
         {
-          DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
+          DrawLineV(sensorStart, sensorEnd, YELLOW);
         }
       }
-      if (!trackSet)
-        DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, YELLOW);
+
+      else
+      {
+        if (i == 2)
+          DrawLine(sensorStart.x, sensorStart.y, sensorEnd.x, sensorEnd.y, BLUE);
+      }
     }
   }
 };
@@ -264,11 +293,6 @@ int main()
       for (size_t i = 0; i + 1 < path.size(); i++)
       {
         walls.push_back({path[i], path[i + 1]});
-      }
-
-      for (Wall k : walls)
-      {
-        cout << k.a.x << "," << k.a.y << "  " << k.b.x << "," << k.b.y << endl;
       }
     }
     EndDrawing();
