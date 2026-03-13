@@ -1,4 +1,4 @@
-# Self-Driving Car Path Simulation (Raylib + C++)
+# Self-Driving Car Simulation using Neural Networks (Raylib + C++)
 
 ## Overview
 
@@ -50,12 +50,6 @@ The neural network will act as the **brain of the car** — it takes in what the
 
 The car will have a few ray-based sensors pointing in different directions. Each one measures how far away the road edge is.
 
-Something like:
-
-```
-Left, Front-Left, Front, Front-Right, Right, Speed
-```
-
 ### Outputs — What the car does
 
 The network will output two values:
@@ -63,18 +57,6 @@ The network will output two values:
 ```
 Steering  →  turn left or right
 Throttle  →  speed up or slow down
-```
-
-### Network Shape
-
-A simple feed-forward structure:
-
-```
-6 inputs
-   ↓
-Hidden Layer
-   ↓
-2 outputs
 ```
 
 ---
@@ -108,9 +90,9 @@ Over time, the cars should converge on a working driving strategy.
 - Rotation and acceleration
 - Path drawing system
 - Car class structure
+- Sensor system
 
 **In progress:**
-- Sensor system
 - Neural network integration
 - AI training system
 
