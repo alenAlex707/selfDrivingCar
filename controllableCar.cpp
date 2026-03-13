@@ -224,7 +224,7 @@ public:
 int main()
 {
   InitWindow(1920, 1080, "test window");
-  SetTargetFPS(60);
+  SetTargetFPS(120);
 
   Car car(960, 540);
 
