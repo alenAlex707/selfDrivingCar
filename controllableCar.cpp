@@ -37,6 +37,16 @@ Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd)
   return {-1, -1};
 }
 
+vector<float> normalize(vector<float> arr, float magnitude)
+{
+  vector<float> result{};
+  for (int i = 0; i < arr.size(); i++)
+  {
+    result.push_back(arr[i] / magnitude);
+  }
+  return result;
+}
+
 bool buttonClicked(Rectangle rec)
 {
   Vector2 mouse = GetMousePosition();
@@ -68,6 +78,8 @@ public:
   int sensorCount;
   vector<float> sensorAngles;
 
+  vector<float> sensorValues;
+
   vector<Wall> walls;
 
   Sensor()
@@ -75,6 +87,7 @@ public:
     sensorLength = 200;
     sensorAngles = {-45, -20, 0, 20, 45};
     sensorCount = sensorAngles.size();
+    sensorValues = {0, 0, 0, 0, 0};
   }
 
   void UpdateVal(float x, float y, float theta, const vector<Wall> &walls)
@@ -116,15 +129,20 @@ public:
           }
         }
       }
+
       if (trackSet)
       {
 
         if (hit)
         {
+          // normalize sensor values
+          sensorValues[i] = closestDist / sensorLength;
+          cout << closestDist / sensorLength << endl;
           DrawLineV(sensorStart, closestPoint, {255, 40, 40, 255});
         }
         else
         {
+          sensorValues[i] = 1;
           DrawLineV(sensorStart, sensorEnd, {255, 220, 0, 255});
         }
       }
