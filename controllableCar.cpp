@@ -250,18 +250,22 @@ int main()
   vector<Wall> walls;
 
   Rectangle setTrackBtn = {1750, 1000, 120, 40};
+
+  bool canDrawPath = true;
   bool trackSet = false;
 
   while (!WindowShouldClose())
   {
     float dt = GetFrameTime();
     car.Update(dt, walls);
-
-    // path mouse input
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_SHIFT))
+    if (canDrawPath)
     {
-      Vector2 mouse = GetMousePosition();
-      path.push_back(mouse);
+      // path mouse input
+      if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_SHIFT))
+      {
+        Vector2 mouse = GetMousePosition();
+        path.push_back(mouse);
+      }
     }
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
@@ -269,6 +273,7 @@ int main()
       path.clear();
       walls.clear();
       trackSet = false;
+      canDrawPath = true;
       cout << "cleared" << endl;
     }
 
@@ -306,6 +311,7 @@ int main()
     if (buttonClicked(setTrackBtn) && trackSet == false && path.size() != 0)
     {
       trackSet = true;
+      canDrawPath = false;
       cout << "clicked" << endl;
 
       for (size_t i = 0; i + 1 < path.size(); i++)
