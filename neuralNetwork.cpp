@@ -13,5 +13,5 @@ public:
     vector<vector<float>> weights_ho;
 
     vector<float> bias_i;
-    vector<float> bias_o;
+    vector<float> bias_o; 
 };
