@@ -249,6 +249,8 @@ int main()
   vector<Vector2> path;
   vector<Wall> walls;
 
+  Wall finishLine;  
+
   Rectangle setTrackBtn = {1750, 1000, 120, 40};
 
   bool canDrawPath = true;
