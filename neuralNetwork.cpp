@@ -1,4 +1,5 @@
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
@@ -21,5 +22,34 @@ public:
         weights_ho.assign(HIDDEN_N, vector<float>(OUTPUT_N, 0.0f));
         bias_h.assign(HIDDEN_N, 0.0f);
         bias_o.assign(OUTPUT_N, 0.0f);
+    }
+
+    void randomize()
+    {
+        for (int i = 0; i < weights_ih.size(); i++)
+        {
+            for (int j = 0; j < weights_ih[i].size(); j++)
+            {
+                weights_ih[i][j] = (float)rand() / (float)RAND_MAX * 2.0f - 1.0f;
+            }
+        }
+
+        for (int i = 0; i < weights_ho.size(); i++)
+        {
+            for (int j = 0; j < weights_ho[i].size(); j++)
+            {
+                weights_ho[i][j] = (float)rand() / (float)RAND_MAX * 2.0f - 1.0f;
+            }
+        }
+
+        for (int i = 0; i < bias_h.size(); i++)
+        {
+            bias_h[i] = (float)rand() / (float)RAND_MAX * 2.0f - 1.0f;
+        }
+
+        for (int i = 0; i < bias_o.size(); i++)
+        {
+            bias_o[i] = (float)rand() / (float)RAND_MAX * 2.0f - 1.0f;
+        }
     }
 };
