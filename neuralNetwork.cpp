@@ -99,16 +99,47 @@ public:
             }
         }
 
-        for (auto bh : bias_h)
+        for (auto const &bh : bias_h)
         {
             weightsFlattened.push_back(bh);
         }
 
-        for (auto bo : bias_o)
+        for (auto const &bo : bias_o)
         {
             weightsFlattened.push_back(bo);
         }
 
         return weightsFlattened;
+    }
+
+    void setWeights(vector<float> flat)
+    {
+        int id{};
+
+        for (int i = 0; i < weights_ih.size(); i++)
+        {
+            for (int j = 0; j < weights_ih[i].size(); j++)
+            {
+                weights_ih[i][j] = flat[id++];
+            }
+        }
+
+        for (int i = 0; i < weights_ho.size(); i++)
+        {
+            for (int j = 0; j < weights_ho[i].size(); j++)
+            {
+                weights_ho[i][j] = flat[id++];
+            }
+        }
+
+        for (int i = 0; i < bias_h.size(); i++)
+        {
+            bias_h[i] = flat[id++];
+        }
+
+        for (int i = 0; i < bias_o.size(); i++)
+        {
+            bias_o[i] = flat[id++];
+        }
     }
 };
