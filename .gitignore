@@ -1,0 +1,6 @@
+builds/
+localtest/
+.vscode/
+*.exe
+*.o
+*.obj
