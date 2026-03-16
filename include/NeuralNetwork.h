@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class neuralNetwork
+class NeuralNetwork
 {
 public:
   static const int INPUT_N = 5;
@@ -17,7 +17,7 @@ public:
   vector<float> bias_h;
   vector<float> bias_o;
 
-  neuralNetwork();
+  NeuralNetwork();
 
   void randomize();
 

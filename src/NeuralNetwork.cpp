@@ -1,16 +1,17 @@
-#include "neuralNetwork.h"
+#include "NeuralNetwork.h"
 #include <cstdlib>
 #include <cmath>
 
-neuralNetwork::neuralNetwork()
+NeuralNetwork::NeuralNetwork()
 {
   weights_ih.assign(INPUT_N, vector<float>(HIDDEN_N, 0.0f));
   weights_ho.assign(HIDDEN_N, vector<float>(OUTPUT_N, 0.0f));
   bias_h.assign(HIDDEN_N, 0.0f);
   bias_o.assign(OUTPUT_N, 0.0f);
+  randomize();
 }
 
-void neuralNetwork::randomize()
+void NeuralNetwork::randomize()
 {
   for (int i = 0; i < weights_ih.size(); i++)
   {
@@ -39,7 +40,7 @@ void neuralNetwork::randomize()
   }
 }
 
-vector<float> neuralNetwork::forward(vector<float> inputs)
+vector<float> NeuralNetwork::forward(vector<float> inputs)
 {
   vector<float> hiddenLayer(HIDDEN_N, 0.0f);
   vector<float> outputLayer(OUTPUT_N, 0.0f);
@@ -64,7 +65,7 @@ vector<float> neuralNetwork::forward(vector<float> inputs)
   return outputLayer;
 }
 
-vector<float> neuralNetwork::getWeights()
+vector<float> NeuralNetwork::getWeights()
 {
   vector<float> weightsFlattened;
 
@@ -97,7 +98,7 @@ vector<float> neuralNetwork::getWeights()
   return weightsFlattened;
 }
 
-void neuralNetwork::setWeights(vector<float> flat)
+void NeuralNetwork::setWeights(vector<float> flat)
 {
   int id{};
 
