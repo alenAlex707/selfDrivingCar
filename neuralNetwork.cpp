@@ -1,5 +1,6 @@
 #include <vector>
 #include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
@@ -51,5 +52,30 @@ public:
         {
             bias_o[i] = (float)rand() / (float)RAND_MAX * 2.0f - 1.0f;
         }
+    }
+
+    vector<float> forward(vector<float> inputs)
+    {
+        vector<float> hiddenLayer(HIDDEN_N, 0.0f);
+        vector<float> outputLayer(OUTPUT_N, 0.0f);
+
+        for (int i = 0; i < HIDDEN_N; i++)
+        {
+            for (int j = 0; j < INPUT_N; j++)
+            {
+                hiddenLayer[i] += inputs[j] * weights_ih[j][i];
+            }
+            hiddenLayer[i] = tanh(hiddenLayer[i] + bias_h[i]);
+        }
+
+        for (int i = 0; i < OUTPUT_N; i++)
+        {
+            for (int j = 0; j < HIDDEN_N; j++)
+            {
+                outputLayer[i] += hiddenLayer[j] * weights_ho[j][i];
+            }
+            outputLayer[i] = tanh(outputLayer[i] + bias_o[i]);
+        }
+        return outputLayer;
     }
 };
