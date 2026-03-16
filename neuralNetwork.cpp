@@ -78,4 +78,37 @@ public:
         }
         return outputLayer;
     }
+
+    vector<float> getWeights()
+    {
+        vector<float> weightsFlattened;
+
+        for (int j = 0; j < weights_ih.size(); j++)
+        {
+            for (int k = 0; k < weights_ih[j].size(); k++)
+            {
+                weightsFlattened.push_back(weights_ih[j][k]);
+            }
+        }
+
+        for (int j = 0; j < weights_ho.size(); j++)
+        {
+            for (int k = 0; k < weights_ho[j].size(); k++)
+            {
+                weightsFlattened.push_back(weights_ho[j][k]);
+            }
+        }
+
+        for (auto bh : bias_h)
+        {
+            weightsFlattened.push_back(bh);
+        }
+
+        for (auto bo : bias_o)
+        {
+            weightsFlattened.push_back(bo);
+        }
+
+        return weightsFlattened;
+    }
 };
