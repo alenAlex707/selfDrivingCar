@@ -19,7 +19,7 @@ int main()
   vector<Vector2> path;
   vector<Wall> walls;
 
-  Wall finishLine;
+  Vector2 spawnpoint;
 
   Rectangle setTrackBtn = {1750, 1000, 120, 40};
 
@@ -29,7 +29,7 @@ int main()
   while (!WindowShouldClose())
   {
     float dt = GetFrameTime();
-    car.Update(dt, walls);
+    car.Update(trackSet, dt, walls);
 
     if (canDrawPath)
     {
@@ -83,6 +83,12 @@ int main()
     {
       trackSet = true;
       canDrawPath = false;
+
+      spawnpoint.x = (path[0].x + path[path.size() - 1].x) / 2;
+      spawnpoint.y = (path[0].y + path[path.size() - 1].y) / 2;
+
+      car.x = spawnpoint.x;
+      car.y = spawnpoint.y;
 
       for (size_t i = 0; i + 1 < path.size(); i++)
       {

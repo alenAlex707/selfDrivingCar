@@ -65,10 +65,5 @@ void Sensor::DrawSensor(bool trackSet)
         DrawLineV(sensorStart, sensorEnd, {255, 220, 0, 255});
       }
     }
-    else
-    {
-      if (i == 2)
-        DrawLineV(sensorStart, sensorEnd, BLUE);
-    }
   }
 }

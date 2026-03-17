@@ -21,50 +21,53 @@ Car::Car(float x, float y)
   origin = {width / 2, height / 2};
 }
 
-void Car::Update(float dt, const vector<Wall> &walls)
+void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 {
-  float rad = angle * DEG2RAD;
+  if (trackSet)
+  {
+    float rad = angle * DEG2RAD;
 
-  vector<float> neuralOut = brain.forward(sensor.sensorValues);
+    vector<float> neuralOut = brain.forward(sensor.sensorValues);
 
-  angle += neuralOut[0] * rotationSpeed *dt;
-  speed += neuralOut[1] * acceleration * dt;
+    angle += neuralOut[0] * rotationSpeed * dt;
+    speed += neuralOut[1] * acceleration * dt;
 
-  /*
-  if (IsKeyDown(KEY_W))
-    speed += acceleration * dt;
-  if (IsKeyDown(KEY_A))
-    angle -= rotationSpeed * dt;
-  if (IsKeyDown(KEY_S))
-    speed -= acceleration * dt;
-  if (IsKeyDown(KEY_D))
-    angle += rotationSpeed * dt;
-  if (IsKeyDown(KEY_SPACE))
-    speed += speed * retardation * dt * 1.4;
- */
+    /*
+    if (IsKeyDown(KEY_W))
+      speed += acceleration * dt;
+    if (IsKeyDown(KEY_A))
+      angle -= rotationSpeed * dt;
+    if (IsKeyDown(KEY_S))
+      speed -= acceleration * dt;
+    if (IsKeyDown(KEY_D))
+      angle += rotationSpeed * dt;
+    if (IsKeyDown(KEY_SPACE))
+      speed += speed * retardation * dt * 1.4;
+   */
 
+    if (fabs(speed) < 5.0f)
+      speed = 0;
 
-  if (fabs(speed) < 5.0f)
-    speed = 0;
+    speed += speed * retardation * dt;
 
-  speed += speed * retardation * dt;
+    fitness += speed * dt;
 
-  fitness += speed *dt;
+    vel_x = cos(rad) * speed;
+    vel_y = sin(rad) * speed;
 
-  vel_x = cos(rad) * speed;
-  vel_y = sin(rad) * speed;
-
-  x += vel_x * dt;
-  y += vel_y * dt;
-  sensor.UpdateVal(x, y, angle, walls);
+    x += vel_x * dt;
+    y += vel_y * dt;
+    sensor.UpdateVal(x, y, angle, walls);
+  }
 }
 
 void Car::Draw(bool trackSet)
 {
-  Rectangle rect = {x, y, width, height};
-  DrawRectanglePro(rect, origin, angle, {0, 200, 220, 255});
-  rect.x = x;
-  rect.y = y;
+  if (trackSet)
+  {
+    Rectangle rect = {x, y, width, height};
+    DrawRectanglePro(rect, origin, angle, {0, 200, 220, 255});
+  }
 
   sensor.DrawSensor(trackSet);
 }

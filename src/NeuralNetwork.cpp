@@ -1,6 +1,8 @@
 #include "NeuralNetwork.h"
 #include <cstdlib>
 #include <cmath>
+#include <iostream>
+using namespace std;
 
 NeuralNetwork::NeuralNetwork()
 {
@@ -62,6 +64,9 @@ vector<float> NeuralNetwork::forward(vector<float> inputs)
     }
     outputLayer[i] = tanh(outputLayer[i] + bias_o[i]);
   }
+
+  for (auto const &y : outputLayer)
+    cout << y << endl;
   return outputLayer;
 }
 

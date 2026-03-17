@@ -36,6 +36,6 @@ public:
 
   Car(float x, float y);
 
-  void Update(float dt, const vector<Wall> &walls);
+  void Update(bool trackSet, float dt, const vector<Wall> &walls);
   void Draw(bool trackSet);
 };
