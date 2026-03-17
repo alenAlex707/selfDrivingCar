@@ -83,7 +83,6 @@ int main()
     {
       trackSet = true;
       canDrawPath = false;
-      cout << "clicked" << endl;
 
       for (size_t i = 0; i + 1 < path.size(); i++)
       {
