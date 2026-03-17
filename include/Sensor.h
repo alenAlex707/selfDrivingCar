@@ -25,4 +25,5 @@ public:
 
     void UpdateVal(float x, float y, float theta, const vector<Wall> &walls);
     void DrawSensor(bool trackSet);
+    bool hasCollided();
 };

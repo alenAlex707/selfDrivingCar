@@ -10,6 +10,8 @@ using namespace std;
 class Car
 {
 public:
+  bool alive;
+
   float x;
   float y;
 
@@ -29,6 +31,8 @@ public:
   Sensor sensor;
 
   Vector2 origin;
+  Vector2 spawn;
+  float spawnAngle;
 
   // neuralNetwork
   NeuralNetwork brain;
@@ -36,6 +40,7 @@ public:
 
   Car(float x, float y);
 
+  void reset();
   void Update(bool trackSet, float dt, const vector<Wall> &walls);
   void Draw(bool trackSet);
 };

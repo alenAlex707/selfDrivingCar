@@ -65,8 +65,6 @@ vector<float> NeuralNetwork::forward(vector<float> inputs)
     outputLayer[i] = tanh(outputLayer[i] + bias_o[i]);
   }
 
-  for (auto const &y : outputLayer)
-    cout << y << endl;
   return outputLayer;
 }
 

@@ -14,12 +14,12 @@ int main()
   InitWindow(1920, 1080, "test window");
   SetTargetFPS(120);
 
-  Car car(960, 540);
-
   vector<Vector2> path;
   vector<Wall> walls;
 
   Vector2 spawnpoint;
+
+  Car car(0, 0);
 
   Rectangle setTrackBtn = {1750, 1000, 120, 40};
 
@@ -87,6 +87,9 @@ int main()
       spawnpoint.x = (path[0].x + path[path.size() - 1].x) / 2;
       spawnpoint.y = (path[0].y + path[path.size() - 1].y) / 2;
 
+      car.spawn = spawnpoint;
+      car.angle = getStartAngle(path);
+      car.spawnAngle = getStartAngle(path);
       car.x = spawnpoint.x;
       car.y = spawnpoint.y;
 

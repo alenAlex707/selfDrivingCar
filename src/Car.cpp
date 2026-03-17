@@ -1,8 +1,11 @@
 #include "Car.h"
 #include <math.h>
+#include <iostream>
+using namespace std;
 
 Car::Car(float x, float y)
 {
+  alive = true;
   this->x = x;
   this->y = y;
 
@@ -21,6 +24,17 @@ Car::Car(float x, float y)
   origin = {width / 2, height / 2};
 }
 
+void Car::reset()
+{
+  this->x = spawn.x;
+  this->y = spawn.y;
+  this->speed = 0;
+  this->angle = spawnAngle;
+
+  alive = true;
+  fitness = 0;
+}
+
 void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 {
   if (trackSet)
@@ -29,10 +43,9 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 
     vector<float> neuralOut = brain.forward(sensor.sensorValues);
 
-    angle += neuralOut[0] * rotationSpeed * dt;
-    speed += neuralOut[1] * acceleration * dt;
+    // angle += neuralOut[0] * rotationSpeed * dt;
+    // speed += neuralOut[1] * acceleration * dt;
 
-    /*
     if (IsKeyDown(KEY_W))
       speed += acceleration * dt;
     if (IsKeyDown(KEY_A))
@@ -43,7 +56,6 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
       angle += rotationSpeed * dt;
     if (IsKeyDown(KEY_SPACE))
       speed += speed * retardation * dt * 1.4;
-   */
 
     if (fabs(speed) < 5.0f)
       speed = 0;
@@ -58,6 +70,12 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
     x += vel_x * dt;
     y += vel_y * dt;
     sensor.UpdateVal(x, y, angle, walls);
+    if (sensor.hasCollided())
+    {
+      cout << "wall collision" << endl;
+      alive = false;
+      reset();
+    }
   }
 }
 
