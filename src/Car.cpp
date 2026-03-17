@@ -25,6 +25,12 @@ void Car::Update(float dt, const vector<Wall> &walls)
 {
   float rad = angle * DEG2RAD;
 
+  vector<float> neuralOut = brain.forward(sensor.sensorValues);
+
+  angle += neuralOut[0] * rotationSpeed *dt;
+  speed += neuralOut[1] * acceleration * dt;
+
+  /*
   if (IsKeyDown(KEY_W))
     speed += acceleration * dt;
   if (IsKeyDown(KEY_A))
@@ -35,11 +41,15 @@ void Car::Update(float dt, const vector<Wall> &walls)
     angle += rotationSpeed * dt;
   if (IsKeyDown(KEY_SPACE))
     speed += speed * retardation * dt * 1.4;
+ */
+
 
   if (fabs(speed) < 5.0f)
     speed = 0;
 
   speed += speed * retardation * dt;
+
+  fitness += speed *dt;
 
   vel_x = cos(rad) * speed;
   vel_y = sin(rad) * speed;
