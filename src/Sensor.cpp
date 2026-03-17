@@ -46,7 +46,7 @@ void Sensor::DrawSensor(bool trackSet)
           closestDist = distance;
           closestPoint = intersection;
           hit = true;
-          printf("INTERSECTION sensor %d: %.2f, %.2f \n", i + 1, intersection.x, intersection.y);
+          // printf("INTERSECTION sensor %d: %.2f, %.2f \n", i + 1, intersection.x, intersection.y);
         }
       }
     }
@@ -56,7 +56,7 @@ void Sensor::DrawSensor(bool trackSet)
       if (hit)
       {
         sensorValues[i] = closestDist / sensorLength;
-        cout << closestDist / sensorLength << endl;
+        // cout << closestDist / sensorLength << endl;
         DrawLineV(sensorStart, closestPoint, {255, 40, 40, 255});
       }
       else
