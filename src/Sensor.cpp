@@ -67,3 +67,15 @@ void Sensor::DrawSensor(bool trackSet)
     }
   }
 }
+
+bool Sensor::hasCollided()
+{
+  for (int i = 0; i < sensorValues.size(); i++)
+  {
+    if (sensorValues[i] < 0.1f && sensorValues[i] != 0.0f)
+    {
+      return true;
+    }
+  }
+  return false;
+}
