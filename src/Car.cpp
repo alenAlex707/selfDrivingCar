@@ -3,11 +3,11 @@
 #include <iostream>
 using namespace std;
 
-Car::Car(float x, float y)
+Car::Car()
 {
   alive = true;
-  this->x = x;
-  this->y = y;
+  this->x = 0;
+  this->y = 0;
 
   angle = 0.0f;
   rotationSpeed = 180.0f;
@@ -74,7 +74,6 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
     {
       cout << "wall collision" << endl;
       alive = false;
-      reset();
     }
   }
 }

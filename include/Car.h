@@ -38,7 +38,7 @@ public:
   NeuralNetwork brain;
   float fitness;
 
-  Car(float x, float y);
+  Car();
 
   void reset();
   void Update(bool trackSet, float dt, const vector<Wall> &walls);
