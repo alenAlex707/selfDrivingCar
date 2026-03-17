@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include <vector>
 #include "Sensor.h"
+#include "NeuralNetwork.h"
 
 using namespace std;
 
@@ -28,6 +29,10 @@ public:
   Sensor sensor;
 
   Vector2 origin;
+
+  // neuralNetwork
+  NeuralNetwork brain;
+  float fitness;
 
   Car(float x, float y);
 
