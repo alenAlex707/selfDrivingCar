@@ -6,7 +6,9 @@ using namespace std;
 Car::Car()
 {
   alive = true;
-  timeAlive = 0.0f;
+  fitness = 0.0f;
+  fitnessLast3sec = 0.0f;
+  Timer3sec = 0.0f;
 
   this->x = 0;
   this->y = 0;
@@ -18,7 +20,7 @@ Car::Car()
   vel_y = 0.0f;
 
   speed = 0.0f;
-  acceleration = 700.0f;
+  acceleration = 800.0f;
   retardation = -3.5f;
 
   width = 40;
@@ -34,7 +36,6 @@ void Car::reset()
   this->angle = spawnAngle;
 
   alive = true;
-  timeAlive = 0;
   fitness = 0;
 }
 
@@ -42,14 +43,16 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 {
   if (trackSet)
   {
-    timeAlive += dt;
+    Timer3sec += dt;
+
     float rad = angle * DEG2RAD;
 
     vector<float> neuralOut = brain.forward(sensor.sensorValues);
 
     angle += neuralOut[0] * rotationSpeed * dt;
-    speed += neuralOut[1] * acceleration * dt;
+    speed += ((neuralOut[1] + 1.0f) / 2.0f) * acceleration * dt;
 
+    /*
     if (IsKeyDown(KEY_W))
       speed += acceleration * dt;
     if (IsKeyDown(KEY_A))
@@ -60,12 +63,9 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
       angle += rotationSpeed * dt;
     if (IsKeyDown(KEY_SPACE))
       speed += speed * retardation * dt * 1.4;
-
-    if (fabs(speed) < 5.0f)
-      speed = 0;
+   */
 
     speed += speed * retardation * dt;
-
     fitness += speed * dt;
 
     vel_x = cos(rad) * speed;
@@ -80,10 +80,16 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
       alive = false;
     }
 
-    if (timeAlive > 10.0f)
+    if (Timer3sec >= 3.0f)
     {
-      alive = false;
+      if (fitness - fitnessLast3sec < 500.0f)
+      {
+        alive = false;
+      }
+      Timer3sec = 0;
+      fitnessLast3sec = fitness;
     }
+    cout << fitness - fitnessLast3sec << endl;
   }
 }
 

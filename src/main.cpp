@@ -82,7 +82,11 @@ int main()
         car.Draw(trackSet);
 
     DrawText("HUD", 20, 20, 20, GREEN);
-    DrawText(TextFormat("Generation: ", ga.generation), 20, 45, 20, GREEN);
+    if (!trackSet)
+      DrawText(TextFormat("Generation: ", ga.generation), 20, 45, 20, GREEN);
+    else
+      DrawText(TextFormat("Generation: %d", ga.generation + 1), 20, 45, 20, GREEN);
+
     // DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
     // DrawText(TextFormat("Y: %.2f", car.y), 20, 45, 20, GREEN);
     // DrawText(TextFormat("Speed: %.2f", car.speed), 20, 70, 20, GREEN);
@@ -99,7 +103,6 @@ int main()
 
     if (buttonClicked(setTrackBtn) && trackSet == false && path.size() != 0)
     {
-
       trackSet = true;
       canDrawPath = false;
 

@@ -29,6 +29,9 @@ GeneticAlgo::GeneticAlgo(int popSize, Vector2 spawn, float spawnAngle)
 
 bool GeneticAlgo::allDead()
 {
+  if (population.empty())
+    return false;
+
   for (auto &car : population)
   {
     if (car.alive == true)
@@ -72,8 +75,6 @@ Car GeneticAlgo::createChild()
   }
 
   child.brain.setWeights(crossover);
-  cout << child.spawn.x << "," << child.spawn.y << endl;
-
   return child;
 }
 

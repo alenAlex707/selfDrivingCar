@@ -1,7 +1,8 @@
 #pragma once
 
-#include "raylib.h"
 #include <vector>
+
+#include "raylib.h"
 #include "Sensor.h"
 #include "NeuralNetwork.h"
 
@@ -11,8 +12,9 @@ class Car
 {
 public:
   bool alive;
-  float timeAlive;
-  
+  float fitnessLast3sec;
+  float Timer3sec;
+
   float x;
   float y;
 
