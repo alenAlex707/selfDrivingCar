@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Car.h"
+#include "GeneticAlgorithm.h"
 #include "Utils.h"
 
 using namespace std;
@@ -19,17 +20,27 @@ int main()
 
   Vector2 spawnpoint;
 
-  Car car(0, 0);
-
   Rectangle setTrackBtn = {1750, 1000, 120, 40};
 
   bool canDrawPath = true;
   bool trackSet = false;
 
+  GeneticAlgo ga;
+  // bool allCarsDead = true;
+
   while (!WindowShouldClose())
   {
     float dt = GetFrameTime();
-    car.Update(trackSet, dt, walls);
+
+    if (ga.allDead() && trackSet)
+    {
+      //  G.A
+    }
+
+    // only update if car is alive
+    for (auto &car : ga.population)
+      if (car.alive)
+        car.Update(trackSet, dt, walls);
 
     if (canDrawPath)
     {
@@ -52,23 +63,29 @@ int main()
     BeginDrawing();
     ClearBackground({20, 20, 20, 255});
 
+    // path drawing
     for (size_t i = 0; i + 1 < path.size(); i++)
     {
       DrawLineV(path[i], path[i + 1], LIGHTGRAY);
       DrawCircle(path[i].x, path[i].y, 5, LIGHTGRAY);
     }
 
+    // final dot drawing on path
     if (trackSet)
     {
       DrawCircle(path[path.size() - 1].x, path[path.size() - 1].y, 5, WHITE);
     }
 
-    car.Draw(trackSet);
+    // only draw if car is alive
+    for (auto &car : ga.population)
+      if (car.alive)
+        car.Draw(trackSet);
 
-    DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
-    DrawText(TextFormat("Y: %.2f", car.y), 20, 45, 20, GREEN);
-    DrawText(TextFormat("Speed: %.2f", car.speed), 20, 70, 20, GREEN);
-    DrawText(TextFormat("Angle: %.2f", car.angle), 20, 95, 20, GREEN);
+    DrawText("HUD", 20, 20, 20, GREEN);
+    // DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
+    // DrawText(TextFormat("Y: %.2f", car.y), 20, 45, 20, GREEN);
+    // DrawText(TextFormat("Speed: %.2f", car.speed), 20, 70, 20, GREEN);
+    // DrawText(TextFormat("Angle: %.2f", car.angle), 20, 95, 20, GREEN);
 
     DrawRectangleRec(setTrackBtn, GRAY);
     DrawText("Set Track", 1755, 1005, 20, BLACK);
@@ -81,17 +98,14 @@ int main()
 
     if (buttonClicked(setTrackBtn) && trackSet == false && path.size() != 0)
     {
+
       trackSet = true;
       canDrawPath = false;
 
       spawnpoint.x = (path[0].x + path[path.size() - 1].x) / 2;
       spawnpoint.y = (path[0].y + path[path.size() - 1].y) / 2;
 
-      car.spawn = spawnpoint;
-      car.angle = getStartAngle(path);
-      car.spawnAngle = getStartAngle(path);
-      car.x = spawnpoint.x;
-      car.y = spawnpoint.y;
+      ga = GeneticAlgo(100, spawnpoint, getStartAngle(path));
 
       for (size_t i = 0; i + 1 < path.size(); i++)
       {
