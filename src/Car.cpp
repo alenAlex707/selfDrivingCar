@@ -6,6 +6,8 @@ using namespace std;
 Car::Car()
 {
   alive = true;
+  timeAlive = 0.0f;
+
   this->x = 0;
   this->y = 0;
 
@@ -16,7 +18,7 @@ Car::Car()
   vel_y = 0.0f;
 
   speed = 0.0f;
-  acceleration = 1500.0f;
+  acceleration = 700.0f;
   retardation = -3.5f;
 
   width = 40;
@@ -32,6 +34,7 @@ void Car::reset()
   this->angle = spawnAngle;
 
   alive = true;
+  timeAlive = 0;
   fitness = 0;
 }
 
@@ -39,12 +42,13 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 {
   if (trackSet)
   {
+    timeAlive += dt;
     float rad = angle * DEG2RAD;
 
     vector<float> neuralOut = brain.forward(sensor.sensorValues);
 
-    // angle += neuralOut[0] * rotationSpeed * dt;
-    // speed += neuralOut[1] * acceleration * dt;
+    angle += neuralOut[0] * rotationSpeed * dt;
+    speed += neuralOut[1] * acceleration * dt;
 
     if (IsKeyDown(KEY_W))
       speed += acceleration * dt;
@@ -70,9 +74,14 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
     x += vel_x * dt;
     y += vel_y * dt;
     sensor.UpdateVal(x, y, angle, walls);
+
     if (sensor.hasCollided())
     {
-      cout << "wall collision" << endl;
+      alive = false;
+    }
+
+    if (timeAlive > 10.0f)
+    {
       alive = false;
     }
   }

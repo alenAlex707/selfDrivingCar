@@ -34,7 +34,7 @@ int main()
 
     if (ga.allDead() && trackSet)
     {
-      //  G.A
+      ga.evolve();
     }
 
     // only update if car is alive
@@ -82,6 +82,7 @@ int main()
         car.Draw(trackSet);
 
     DrawText("HUD", 20, 20, 20, GREEN);
+    DrawText(TextFormat("Generation: ", ga.generation), 20, 45, 20, GREEN);
     // DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
     // DrawText(TextFormat("Y: %.2f", car.y), 20, 45, 20, GREEN);
     // DrawText(TextFormat("Speed: %.2f", car.speed), 20, 70, 20, GREEN);
@@ -104,6 +105,8 @@ int main()
 
       spawnpoint.x = (path[0].x + path[path.size() - 1].x) / 2;
       spawnpoint.y = (path[0].y + path[path.size() - 1].y) / 2;
+
+      cout << spawnpoint.x << "," << spawnpoint.y << endl;
 
       ga = GeneticAlgo(100, spawnpoint, getStartAngle(path));
 

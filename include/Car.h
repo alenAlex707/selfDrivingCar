@@ -11,7 +11,8 @@ class Car
 {
 public:
   bool alive;
-
+  float timeAlive;
+  
   float x;
   float y;
 
