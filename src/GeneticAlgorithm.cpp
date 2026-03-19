@@ -14,8 +14,8 @@ GeneticAlgo::GeneticAlgo(int popSize, Vector2 spawn, float spawnAngle)
   this->generation = 0;
   this->population = vector<Car>(popSize);
   this->eliteCount = 20;
-  this->mutationRate = 0.05; // 5% chance
-  this->mutationStrength = 0.3;
+  this->mutationRate = .25; // 50% chance
+  this->mutationStrength = 1.5;
 
   for (auto &car : population)
   {
