@@ -89,7 +89,6 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
       Timer3sec = 0;
       fitnessLast3sec = fitness;
     }
-    cout << fitness - fitnessLast3sec << endl;
   }
 }
 

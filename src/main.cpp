@@ -87,6 +87,8 @@ int main()
     else
       DrawText(TextFormat("Generation: %d", ga.generation + 1), 20, 45, 20, GREEN);
 
+    DrawText(TextFormat("Alive cars: %.d", ga.aliveCars()), 20, 70, 20, GREEN);
+
     // DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
     // DrawText(TextFormat("Y: %.2f", car.y), 20, 45, 20, GREEN);
     // DrawText(TextFormat("Speed: %.2f", car.speed), 20, 70, 20, GREEN);
@@ -108,8 +110,6 @@ int main()
 
       spawnpoint.x = (path[0].x + path[path.size() - 1].x) / 2;
       spawnpoint.y = (path[0].y + path[path.size() - 1].y) / 2;
-
-      cout << spawnpoint.x << "," << spawnpoint.y << endl;
 
       ga = GeneticAlgo(100, spawnpoint, getStartAngle(path));
 

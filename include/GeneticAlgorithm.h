@@ -18,6 +18,7 @@ public:
   float mutationStrength;
   GeneticAlgo();
   GeneticAlgo(int popSize, Vector2 spawn, float spawnAngle);
+  int aliveCars();
   bool allDead();
   Car createChild();
   void evolve();

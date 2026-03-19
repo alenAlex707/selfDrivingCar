@@ -27,6 +27,19 @@ GeneticAlgo::GeneticAlgo(int popSize, Vector2 spawn, float spawnAngle)
   }
 }
 
+int GeneticAlgo::aliveCars()
+{
+  int c{};
+  for (auto &car : population)
+  {
+    if (car.alive)
+    {
+      c++;
+    }
+  }
+  return c;
+}
+
 bool GeneticAlgo::allDead()
 {
   if (population.empty())
@@ -100,7 +113,5 @@ void GeneticAlgo::evolve()
   {
     car.reset();
   }
-
-  cout << generation << endl;
   generation++;
 }
