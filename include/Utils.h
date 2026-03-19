@@ -14,6 +14,3 @@ struct Wall
 float getDistance(Vector2 a, Vector2 b);
 Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd);
 float getStartAngle(vector<Vector2> path);
-
-bool buttonClicked(Rectangle rec);
-bool buttonHover(Rectangle rec);

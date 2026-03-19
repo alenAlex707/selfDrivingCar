@@ -23,13 +23,14 @@ int main()
 
   // button def area
   Button setTrackBtn({1750, 1000, 120, 40}, "Set track", 20);
+  Button copyPath({1600, 1000, 120, 40}, "Copy track", 20);
+  Button inputTrack({1450, 1000, 120, 40}, "Input track", 20);
 
   bool canDrawPath = true;
   bool trackSet = false;
 
   int dispAliveCars = 0;
   GeneticAlgo ga;
-  // bool allCarsDead = true;
 
   while (!WindowShouldClose())
   {
@@ -102,6 +103,8 @@ int main()
     // DrawText(TextFormat("Angle: %.2f", car.angle), 20, 95, 20, GREEN);
 
     setTrackBtn.draw();
+    copyPath.draw();
+    inputTrack.draw();
 
     if (setTrackBtn.buttonClicked() && trackSet == false && path.size() != 0)
     {
@@ -117,6 +120,44 @@ int main()
       {
         walls.push_back({path[i], path[i + 1]});
       }
+    }
+
+    if (copyPath.buttonClicked())
+    {
+      for (int i = 0; i < path.size(); i++)
+      {
+        cout << path[i].x << " " << path[i].y << " ";
+      }
+    }
+
+    if (inputTrack.buttonClicked() && !trackSet)
+    {
+      vector<int> v;
+      int x;
+
+      cout << endl;
+      cout << "enter path coords: " << endl;
+      while (cin >> x)
+      {
+        v.push_back(x);
+
+        if (cin.peek() == '\n')
+          break;
+      }
+
+      path.clear();
+      vector<Vector2> actualPath(v.size() / 2);
+
+      for (int i = 0; i < v.size(); i += 2)
+      {
+        actualPath[i / 2].x = v[i];
+        actualPath[i / 2].y = v[i + 1];
+      }
+
+      path = actualPath;
+      cout << "path created!" << endl;
+      
+      actualPath.clear();
     }
 
     EndDrawing();

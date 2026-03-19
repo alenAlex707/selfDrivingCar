@@ -34,23 +34,3 @@ float getStartAngle(vector<Vector2> path)
 
   return atan2(dy, dx) * RAD2DEG + 5;
 }
-
-bool buttonClicked(Rectangle rec)
-{
-  Vector2 mouse = GetMousePosition();
-  if (CheckCollisionPointRec(mouse, rec) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
-  {
-    return true;
-  }
-  return false;
-}
-
-bool buttonHover(Rectangle rec)
-{
-  Vector2 mouse = GetMousePosition();
-  if (CheckCollisionPointRec(mouse, rec))
-  {
-    return true;
-  }
-  return false;
-}
