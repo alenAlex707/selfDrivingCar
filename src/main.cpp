@@ -6,6 +6,7 @@
 #include "Car.h"
 #include "GeneticAlgorithm.h"
 #include "Utils.h"
+#include "Button.h"
 
 using namespace std;
 
@@ -20,11 +21,13 @@ int main()
 
   Vector2 spawnpoint;
 
-  Rectangle setTrackBtn = {1750, 1000, 120, 40};
+  // button def area
+  Button setTrackBtn({1750, 1000, 120, 40}, "Set track", 20);
 
   bool canDrawPath = true;
   bool trackSet = false;
 
+  int dispAliveCars = 0;
   GeneticAlgo ga;
   // bool allCarsDead = true;
 
@@ -57,6 +60,7 @@ int main()
       walls.clear();
       trackSet = false;
       canDrawPath = true;
+      dispAliveCars = 0;
       cout << "cleared" << endl;
     }
 
@@ -83,27 +87,23 @@ int main()
 
     DrawText("HUD", 20, 20, 20, GREEN);
     if (!trackSet)
+    {
       DrawText(TextFormat("Generation: ", ga.generation), 20, 45, 20, GREEN);
+    }
     else
+    {
+      DrawText(TextFormat("Alive cars: %.d", ga.aliveCars()), 20, 70, 20, GREEN);
       DrawText(TextFormat("Generation: %d", ga.generation + 1), 20, 45, 20, GREEN);
-
-    DrawText(TextFormat("Alive cars: %.d", ga.aliveCars()), 20, 70, 20, GREEN);
+    }
 
     // DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
     // DrawText(TextFormat("Y: %.2f", car.y), 20, 45, 20, GREEN);
     // DrawText(TextFormat("Speed: %.2f", car.speed), 20, 70, 20, GREEN);
     // DrawText(TextFormat("Angle: %.2f", car.angle), 20, 95, 20, GREEN);
 
-    DrawRectangleRec(setTrackBtn, GRAY);
-    DrawText("Set Track", 1755, 1005, 20, BLACK);
+    setTrackBtn.draw();
 
-    if (buttonHover(setTrackBtn))
-    {
-      DrawRectangleRec(setTrackBtn, DARKGRAY);
-      DrawText("Set Track", 1755, 1005, 20, BLACK);
-    }
-
-    if (buttonClicked(setTrackBtn) && trackSet == false && path.size() != 0)
+    if (setTrackBtn.buttonClicked() && trackSet == false && path.size() != 0)
     {
       trackSet = true;
       canDrawPath = false;
