@@ -19,6 +19,9 @@ int main()
   vector<Vector2> path;
   vector<Wall> walls;
 
+  Wall finishLine;
+  bool finishLineSet = false;
+
   Vector2 spawnpoint;
 
   // button def area
@@ -29,7 +32,6 @@ int main()
   bool canDrawPath = true;
   bool trackSet = false;
 
-  int dispAliveCars = 0;
   GeneticAlgo ga;
 
   while (!WindowShouldClose())
@@ -53,6 +55,19 @@ int main()
         Vector2 mouse = GetMousePosition();
         path.push_back(mouse);
       }
+      if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && IsKeyDown(KEY_LEFT_SHIFT) && IsKeyDown(KEY_F) && finishLineSet == false && path.size() > 2)
+      {
+        finishLine.b = GetMousePosition();
+        finishLineSet = true;
+
+        for (int i = 0; i + 1 < path.size(); i++)
+        {
+          if (path[i + 1].x == finishLine.b.x && path[i + 1].y == finishLine.b.y)
+          {
+            finishLine.a = path[i];
+          }
+        }
+      }
     }
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
@@ -61,7 +76,7 @@ int main()
       walls.clear();
       trackSet = false;
       canDrawPath = true;
-      dispAliveCars = 0;
+      finishLineSet = false;
       cout << "cleared" << endl;
     }
 
@@ -75,6 +90,8 @@ int main()
       DrawCircle(path[i].x, path[i].y, 5, LIGHTGRAY);
     }
 
+    if (finishLineSet)
+      DrawLineV(finishLine.a, finishLine.b, PURPLE);
     // final dot drawing on path
     if (trackSet)
     {
