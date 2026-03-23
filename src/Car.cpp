@@ -20,7 +20,7 @@ Car::Car()
   vel_y = 0.0f;
 
   speed = 0.0f;
-  acceleration = 500.0f;
+  acceleration = 700.0f;
   retardation = -2.5f;
 
   width = 40;
