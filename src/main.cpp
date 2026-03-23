@@ -156,7 +156,7 @@ int main()
 
       path = actualPath;
       cout << "path created!" << endl;
-      
+
       actualPath.clear();
     }
 

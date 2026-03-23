@@ -20,8 +20,8 @@ Car::Car()
   vel_y = 0.0f;
 
   speed = 0.0f;
-  acceleration = 800.0f;
-  retardation = -3.5f;
+  acceleration = 500.0f;
+  retardation = -2.5f;
 
   width = 40;
   height = 20;
@@ -50,7 +50,7 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
     vector<float> neuralOut = brain.forward(sensor.sensorValues);
 
     angle += neuralOut[0] * rotationSpeed * dt;
-    speed += ((neuralOut[1] + 1.0f) / 2.0f) * acceleration * dt;
+    speed += neuralOut[1] * acceleration * dt;
 
     /*
     if (IsKeyDown(KEY_W))
@@ -66,7 +66,19 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
    */
 
     speed += speed * retardation * dt;
-    fitness += speed * dt;
+
+    float sensorSum{};
+    for (int i = 0; i < 5; i++)
+    {
+      sensorSum += sensor.sensorValues[i];
+    }
+
+    fitness += speed * dt + sensorSum * 0.1f;
+
+    if (speed < 0)
+    {
+      speed = 0;
+    }
 
     vel_x = cos(rad) * speed;
     vel_y = sin(rad) * speed;
@@ -80,12 +92,29 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
       alive = false;
     }
 
+    bool offTrack = true;
+
+    for (int i = 0; i < sensor.sensorValues.size(); i++)
+    {
+
+      if (sensor.sensorValues[i] < 1.0f)
+      {
+        offTrack = false;
+      }
+    }
+
+    if (offTrack)
+    {
+        alive = false;
+    }
+
     if (Timer3sec >= 3.0f)
     {
-      if (fitness - fitnessLast3sec < 500.0f)
+      if (fitness - fitnessLast3sec < 350.0f)
       {
         alive = false;
       }
+
       Timer3sec = 0;
       fitnessLast3sec = fitness;
     }

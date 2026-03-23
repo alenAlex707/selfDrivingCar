@@ -13,9 +13,9 @@ GeneticAlgo::GeneticAlgo(int popSize, Vector2 spawn, float spawnAngle)
   this->populationSize = popSize;
   this->generation = 0;
   this->population = vector<Car>(popSize);
-  this->eliteCount = 20;
-  this->mutationRate = .25; // 50% chance
-  this->mutationStrength = 1.5;
+  this->eliteCount = 15;
+  this->mutationRate = 0.15; // 15% chance
+  this->mutationStrength = .4;
 
   for (auto &car : population)
   {
@@ -57,8 +57,8 @@ bool GeneticAlgo::allDead()
 
 Car GeneticAlgo::createChild()
 {
-  int rnd1 = rand() % 20;
-  int rnd2 = rand() % 20;
+  int rnd1 = rand() % eliteCount;
+  int rnd2 = rand() % eliteCount;
   int cutpoint = rand() % 50;
 
   Car child;
@@ -96,7 +96,7 @@ void GeneticAlgo::evolve()
   eliteWeights.clear();
   sort(population.begin(), population.end(), [](const Car &a, const Car &b)
        { return a.fitness > b.fitness; });
-
+  cout << "Gen " << generation << " best fitness: " << population[0].fitness << endl;
   for (int i = 0; i < eliteCount; i++)
   {
     eliteWeights.push_back(population[i].brain.getWeights());

@@ -1,5 +1,8 @@
 #include "Utils.h"
+#include <iostream>
 #include <cmath>
+
+using namespace std;
 
 float getDistance(Vector2 a, Vector2 b)
 {
