@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Car.h"
+#include "BestCar.h"
 #include "GeneticAlgorithm.h"
 #include "Utils.h"
 #include "Button.h"
@@ -22,6 +23,9 @@ int main()
   Wall finishLine;
   bool finishLineSet = false;
 
+  BestCar bestCar;
+  bool bestCarFound = false;
+
   Vector2 spawnpoint;
 
   // button def area
@@ -38,7 +42,7 @@ int main()
   {
     float dt = GetFrameTime();
 
-    if (ga.allDead() && trackSet)
+    if (ga.allDead() && trackSet && bestCarFound == false)
     {
       ga.evolve();
     }
@@ -47,7 +51,7 @@ int main()
     for (auto &car : ga.population)
       if (car.alive)
         car.Update(trackSet, dt, walls, finishLine);
-    
+
     if (canDrawPath)
     {
       if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_SHIFT))
@@ -68,13 +72,41 @@ int main()
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
     {
+      bestCarFound = false;
       path.clear();
       walls.clear();
       trackSet = false;
       canDrawPath = true;
       finishLineSet = false;
+      for (auto &car : ga.population)
+        car.foundPath = false;
       cout << "cleared" << endl;
     }
+
+    if (!bestCarFound)
+    {
+      for (int k = 0; k < ga.population.size(); k++)
+      {
+        if (ga.population[k].foundPath)
+        {
+          bestCar.brain = ga.population[k].brain;
+          bestCar.spawn = spawnpoint;
+          if (path.size() > 1)
+            bestCar.spawnAngle = getStartAngle(path);
+          bestCar.reset();
+          bestCarFound = true;
+          if (bestCarFound)
+          {
+            for (auto &car : ga.population)
+              car.alive = false;
+          }
+          break;
+        }
+      }
+    }
+
+    if (bestCarFound)
+      bestCar.Update(trackSet, dt, walls, finishLine);
 
     BeginDrawing();
     ClearBackground({20, 20, 20, 255});
@@ -96,8 +128,11 @@ int main()
 
     // only draw if car is alive
     for (auto &car : ga.population)
-      if (car.alive)
-        car.Draw(trackSet);
+      if (car.alive && car.foundPath == false)
+        car.Draw(trackSet, {0, 200, 220, 255});
+
+    if (bestCarFound)
+      bestCar.Draw(trackSet, DARKPURPLE);
 
     DrawText("HUD", 20, 20, 20, GREEN);
     if (!trackSet)

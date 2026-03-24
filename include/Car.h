@@ -47,5 +47,5 @@ public:
 
   void reset();
   void Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall &finishLine);
-  void Draw(bool trackSet);
+  void Draw(bool trackSet, Color color);
 };

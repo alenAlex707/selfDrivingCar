@@ -39,6 +39,7 @@ void Car::reset()
 
   alive = true;
   fitness = 0;
+  foundPath = false;
 }
 
 void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall &finishLine)
@@ -51,8 +52,8 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall 
 
     vector<float> neuralOut = brain.forward(sensor.sensorValues);
 
-    // angle += neuralOut[0] * rotationSpeed * dt;
-    // speed += neuralOut[1] * acceleration * dt;
+    angle += neuralOut[0] * rotationSpeed * dt;
+    speed += neuralOut[1] * acceleration * dt;
 
     if (IsKeyDown(KEY_W))
       speed += acceleration * dt;
@@ -120,7 +121,9 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall 
       Timer3sec = 0;
       fitnessLast3sec = fitness;
     }
+
     float crossOffset = 25.0f;
+
     Vector2 cross = getIntersection(finishLine, oldPos, {x + cos(angle * DEG2RAD) * crossOffset, y + sin(angle * DEG2RAD) * crossOffset});
     if (cross.x != -1 && cross.y != -1)
     {
@@ -131,12 +134,12 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall 
   }
 }
 
-void Car::Draw(bool trackSet)
+void Car::Draw(bool trackSet, Color color)
 {
   if (trackSet)
   {
     Rectangle rect = {x, y, width, height};
-    DrawRectanglePro(rect, origin, angle, {0, 200, 220, 255});
+    DrawRectanglePro(rect, origin, angle, color);
   }
 
   sensor.DrawSensor(trackSet);

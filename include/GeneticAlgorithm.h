@@ -22,5 +22,4 @@ public:
   bool allDead();
   Car createChild();
   void evolve();
-  vector<float> getFinalCarWeights();
 };
