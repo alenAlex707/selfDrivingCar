@@ -1,10 +1,12 @@
 #include "Car.h"
 #include <math.h>
+#include <Utils.h>
 #include <iostream>
 using namespace std;
 
 Car::Car()
 {
+  foundPath = false;
   alive = true;
   fitness = 0.0f;
   fitnessLast3sec = 0.0f;
@@ -39,7 +41,7 @@ void Car::reset()
   fitness = 0;
 }
 
-void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
+void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall &finishLine)
 {
   if (trackSet)
   {
@@ -49,10 +51,9 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 
     vector<float> neuralOut = brain.forward(sensor.sensorValues);
 
-    angle += neuralOut[0] * rotationSpeed * dt;
-    speed += neuralOut[1] * acceleration * dt;
+    // angle += neuralOut[0] * rotationSpeed * dt;
+    // speed += neuralOut[1] * acceleration * dt;
 
-    /*
     if (IsKeyDown(KEY_W))
       speed += acceleration * dt;
     if (IsKeyDown(KEY_A))
@@ -63,10 +64,10 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
       angle += rotationSpeed * dt;
     if (IsKeyDown(KEY_SPACE))
       speed += speed * retardation * dt * 1.4;
-   */
 
     speed += speed * retardation * dt;
 
+    // reward system for car being in track
     float sensorSum{};
     for (int i = 0; i < 5; i++)
     {
@@ -83,6 +84,7 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
     vel_x = cos(rad) * speed;
     vel_y = sin(rad) * speed;
 
+    Vector2 oldPos = {x, y};
     x += vel_x * dt;
     y += vel_y * dt;
     sensor.UpdateVal(x, y, angle, walls);
@@ -105,7 +107,7 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 
     if (offTrack)
     {
-        alive = false;
+      alive = false;
     }
 
     if (Timer3sec >= 3.0f)
@@ -117,6 +119,14 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls)
 
       Timer3sec = 0;
       fitnessLast3sec = fitness;
+    }
+    float crossOffset = 25.0f;
+    Vector2 cross = getIntersection(finishLine, oldPos, {x + cos(angle * DEG2RAD) * crossOffset, y + sin(angle * DEG2RAD) * crossOffset});
+    if (cross.x != -1 && cross.y != -1)
+    {
+      cout << "reached finish track" << endl;
+      fitness += 10000;
+      foundPath = true;
     }
   }
 }

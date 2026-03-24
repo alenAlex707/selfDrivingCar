@@ -4,6 +4,7 @@
 
 #include "raylib.h"
 #include "Sensor.h"
+#include "Utils.h"
 #include "NeuralNetwork.h"
 
 using namespace std;
@@ -11,6 +12,7 @@ using namespace std;
 class Car
 {
 public:
+  bool foundPath;
   bool alive;
   float fitnessLast3sec;
   float Timer3sec;
@@ -44,6 +46,6 @@ public:
   Car();
 
   void reset();
-  void Update(bool trackSet, float dt, const vector<Wall> &walls);
+  void Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall &finishLine);
   void Draw(bool trackSet);
 };

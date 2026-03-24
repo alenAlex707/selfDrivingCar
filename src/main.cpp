@@ -46,8 +46,8 @@ int main()
     // only update if car is alive
     for (auto &car : ga.population)
       if (car.alive)
-        car.Update(trackSet, dt, walls);
-
+        car.Update(trackSet, dt, walls, finishLine);
+    
     if (canDrawPath)
     {
       if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && IsKeyDown(KEY_LEFT_SHIFT))
@@ -61,12 +61,8 @@ int main()
         finishLineSet = true;
 
         for (int i = 0; i + 1 < path.size(); i++)
-        {
           if (path[i + 1].x == finishLine.b.x && path[i + 1].y == finishLine.b.y)
-          {
             finishLine.a = path[i];
-          }
-        }
       }
     }
 

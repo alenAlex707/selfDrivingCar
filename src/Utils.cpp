@@ -20,7 +20,7 @@ Vector2 getIntersection(Wall wall, Vector2 sensorStart, Vector2 sensorEnd)
 
   Vector2 intersection;
 
-  if (t < 1 && t > 0 && s < 1 && s > 0)
+  if (t <= 1 && t >= 0 && s <= 1 && s >= 0)
   {
     intersection.x = wall.a.x + t * d1.x;
     intersection.y = wall.a.y + t * d1.y;

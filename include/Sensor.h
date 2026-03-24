@@ -9,21 +9,21 @@ using namespace std;
 class Sensor
 {
 public:
-    float carX;
-    float carY;
-    float carAngle;
+  float carX;
+  float carY;
+  float carAngle;
 
-    float sensorLength;
-    int sensorCount;
-    vector<float> sensorAngles;
+  float sensorLength;
+  int sensorCount;
+  vector<float> sensorAngles;
 
-    vector<float> sensorValues;
+  vector<float> sensorValues;
 
-    vector<Wall> walls;
+  vector<Wall> walls;
 
-    Sensor();
+  Sensor();
 
-    void UpdateVal(float x, float y, float theta, const vector<Wall> &walls);
-    void DrawSensor(bool trackSet);
-    bool hasCollided();
+  void UpdateVal(float x, float y, float theta, const vector<Wall> &walls);
+  void DrawSensor(bool trackSet);
+  bool hasCollided();
 };

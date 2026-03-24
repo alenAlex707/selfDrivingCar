@@ -61,7 +61,7 @@ void Sensor::DrawSensor(bool trackSet)
       }
       else
       {
-        sensorValues[i] = 1;
+        sensorValues[i] = 1.0f;
         DrawLineV(sensorStart, sensorEnd, {255, 220, 0, 255});
       }
     }
@@ -72,7 +72,7 @@ bool Sensor::hasCollided()
 {
   for (int i = 0; i < sensorValues.size(); i++)
   {
-    if (sensorValues[i] < 0.1f && sensorValues[i] != 0.0f)
+    if (sensorValues[i] < 0.05f && sensorValues[i] != 0.0f)
     {
       return true;
     }

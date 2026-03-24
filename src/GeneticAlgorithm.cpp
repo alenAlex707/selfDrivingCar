@@ -115,3 +115,8 @@ void GeneticAlgo::evolve()
   }
   generation++;
 }
+
+vector<float> GeneticAlgo::getFinalCarWeights()
+{
+  return population[0].brain.getWeights();
+}
