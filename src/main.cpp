@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include <vector>
+#include <algorithm>
 #include <cstdlib>
 #include <iostream>
 
@@ -166,7 +167,11 @@ int main()
 
       for (size_t i = 0; i + 1 < path.size(); i++)
       {
-        walls.push_back({path[i], path[i + 1]});
+        Wall w = {path[i], path[i + 1]};
+        if (w.a.x == finishLine.a.x && w.a.y == finishLine.a.y &&
+            w.b.x == finishLine.b.x && w.b.y == finishLine.b.y)
+          continue;
+        walls.push_back(w);
       }
     }
 
@@ -178,6 +183,7 @@ int main()
       }
     }
 
+    // track input
     if (inputTrack.buttonClicked() && !trackSet)
     {
       vector<int> v;

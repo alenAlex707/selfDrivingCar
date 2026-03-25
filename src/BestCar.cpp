@@ -2,7 +2,9 @@
 #include <math.h>
 #include "Utils.h"
 
-BestCar::BestCar() {}
+BestCar::BestCar()
+{
+}
 
 void BestCar::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall &finishLine)
 {

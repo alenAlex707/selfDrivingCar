@@ -6,7 +6,7 @@ using namespace std;
 
 Sensor::Sensor()
 {
-  sensorLength = 350;
+  sensorLength = 700;
   sensorAngles = {-45, -20, 0, 20, 45};
   sensorCount = sensorAngles.size();
   sensorValues = {0, 0, 0, 0, 0};

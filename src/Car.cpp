@@ -123,7 +123,6 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall 
     }
 
     float crossOffset = 25.0f;
-
     Vector2 cross = getIntersection(finishLine, oldPos, {x + cos(angle * DEG2RAD) * crossOffset, y + sin(angle * DEG2RAD) * crossOffset});
     if (cross.x != -1 && cross.y != -1)
     {
