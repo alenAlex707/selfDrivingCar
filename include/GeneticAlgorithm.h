@@ -14,6 +14,8 @@ public:
   int populationSize;
   int eliteCount;
   vector<vector<float>> eliteWeights;
+  float bestFitnessEver;
+  int stuckGenerations;
   float mutationRate;
   float mutationStrength;
   GeneticAlgo();

@@ -10,6 +10,8 @@ using namespace std;
 GeneticAlgo::GeneticAlgo() {}
 GeneticAlgo::GeneticAlgo(int popSize, Vector2 spawn, float spawnAngle)
 {
+  this->bestFitnessEver = 0.0f;
+  this->stuckGenerations = 0;
   this->populationSize = popSize;
   this->generation = 0;
   this->population = vector<Car>(popSize);
@@ -96,7 +98,20 @@ void GeneticAlgo::evolve()
   eliteWeights.clear();
   sort(population.begin(), population.end(), [](const Car &a, const Car &b)
        { return a.fitness > b.fitness; });
-  cout << "Gen " << generation << " best fitness: " << population[0].fitness << endl;
+
+  // dynamic mutation to get rid of stuck generations
+  if (population[0].fitness > bestFitnessEver)
+  {
+    bestFitnessEver = population[0].fitness;
+    stuckGenerations = 0;
+  }
+  else
+  {
+    stuckGenerations++;
+  }
+  mutationRate = min(0.3f, 0.2f + stuckGenerations * 0.02f);
+  mutationStrength = min(0.8f, 0.5f + stuckGenerations * 0.05f);
+
   for (int i = 0; i < eliteCount; i++)
   {
     eliteWeights.push_back(population[i].brain.getWeights());

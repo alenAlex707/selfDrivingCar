@@ -18,6 +18,8 @@ int main()
   InitWindow(1920, 1080, "test window");
   SetTargetFPS(120);
 
+  float elapsedTime = 0.0f;
+
   vector<Vector2> path;
   vector<Wall> walls;
 
@@ -42,8 +44,9 @@ int main()
   while (!WindowShouldClose())
   {
     float dt = GetFrameTime();
-
-    if (ga.allDead() && trackSet && bestCarFound == false)
+    if (trackSet && !bestCarFound)
+      elapsedTime += dt;
+    if (ga.allDead() && trackSet && !bestCarFound)
     {
       ga.evolve();
     }
@@ -73,6 +76,7 @@ int main()
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))
     {
+      elapsedTime = 0.0f;
       bestCarFound = false;
       path.clear();
       walls.clear();
@@ -135,16 +139,25 @@ int main()
     if (bestCarFound)
       bestCar.Draw(trackSet, DARKPURPLE);
 
-    DrawText("HUD", 20, 20, 20, GREEN);
     if (!trackSet)
     {
-      DrawText(TextFormat("Generation: ", ga.generation), 20, 45, 20, GREEN);
+      DrawText(TextFormat("Generation: ", ga.generation), 20, 20, 20, GREEN);
     }
     else
     {
+      DrawText(TextFormat("Generation: %d", ga.generation + 1), 20, 20, 20, GREEN);
       DrawText(TextFormat("Alive cars: %.d", ga.aliveCars()), 20, 70, 20, GREEN);
-      DrawText(TextFormat("Generation: %d", ga.generation + 1), 20, 45, 20, GREEN);
+      DrawText(TextFormat("Best fitness: %.2f", ga.population[0].fitness), 20, 95, 20, GREEN);
+      DrawText(TextFormat("Mutation rate: %.2f", ga.mutationRate), 20, 120, 20, GREEN);
+      DrawText(TextFormat("Stuck generations: %d", ga.stuckGenerations), 20, 145, 20, GREEN);
+
+      if (bestCarFound)
+      {
+        if (bestCarFound)
+          DrawText(TextFormat("Path found! Gen: %d, Time: %.1fs", ga.generation + 1, elapsedTime), 600, 20, 50, GOLD);
+      }
     }
+    DrawText(TextFormat("Time elapsed: %.2fs", elapsedTime), 20, 45, 20, GREEN);
 
     // DrawText(TextFormat("X: %.2f", car.x), 20, 20, 20, GREEN);
     // DrawText(TextFormat("Y: %.2f", car.y), 20, 45, 20, GREEN);
