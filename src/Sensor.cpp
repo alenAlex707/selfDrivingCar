@@ -56,8 +56,8 @@ void Sensor::DrawSensor(bool trackSet)
       if (hit)
       {
         sensorValues[i] = closestDist / sensorLength;
-        // cout << closestDist / sensorLength << endl;
         DrawLineV(sensorStart, closestPoint, {255, 40, 40, 255});
+        DrawText("x", closestPoint.x, closestPoint.y, 15, RED);
       }
       else
       {
