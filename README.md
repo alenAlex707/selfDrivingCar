@@ -1,5 +1,5 @@
 # Self-Driving Car Simulation
-A self-driving car simulation built from scratch in C++ using raylib. Features a custom neural network and genetic algorithm — no ML libraries, no backpropagation. Everything is hand-rolled.
+A self-driving car simulation built from scratch in C++ using raylib. Features a custom neural network and genetic algorithm — no ML libraries, no backprop.
 
 ---
 
@@ -232,7 +232,6 @@ Tracks are drawn in-app by the user (Shift+Click to place points). The path is s
 The finish line is marked with Shift+F+Click on an existing path point. It is excluded from the wall vector during training so sensors don't treat it as an obstacle.
 
 ```cpp
-// wall building — skip finish line segment
 for (size_t i = 0; i + 1 < path.size(); i++) {
     Wall w = {path[i], path[i + 1]};
     if (w.a.x == finishLine.a.x && w.a.y == finishLine.a.y &&
