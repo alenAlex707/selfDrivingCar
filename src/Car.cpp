@@ -90,13 +90,31 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall 
     y += vel_y * dt;
     sensor.UpdateVal(x, y, angle, walls);
 
+    float crossOffset = 25.0f;
+    Vector2 cross = getIntersection(finishLine, oldPos, {x + cos(angle * DEG2RAD) * crossOffset, y + sin(angle * DEG2RAD) * crossOffset});
+    if (cross.x != -1 && cross.y != -1)
+    {
+      cout << "reached finish track" << endl;
+      fitness += 10000;
+      foundPath = true;
+      return; // exit imm
+    }
+
     if (sensor.hasCollided())
     {
       alive = false;
     }
 
-    bool offTrack = true;
+    // check for finish line w only front sensor
+    float frontAngle = (angle + sensor.sensorAngles[2]) * DEG2RAD;
+    Vector2 sStart = {x, y};
+    Vector2 sEnd = {x + cos(frontAngle) * sensor.sensorLength,
+                    y + sin(frontAngle) * sensor.sensorLength};
 
+    Vector2 hit = getIntersection(finishLine, sStart, sEnd);
+    bool nearFinish = (hit.x != -1 && hit.y != -1);
+
+    bool offTrack = true;
     for (int i = 0; i < sensor.sensorValues.size(); i++)
     {
 
@@ -106,7 +124,7 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall 
       }
     }
 
-    if (offTrack)
+    if (offTrack && !nearFinish)
     {
       alive = false;
     }
@@ -120,15 +138,6 @@ void Car::Update(bool trackSet, float dt, const vector<Wall> &walls, const Wall 
 
       Timer3sec = 0;
       fitnessLast3sec = fitness;
-    }
-
-    float crossOffset = 25.0f;
-    Vector2 cross = getIntersection(finishLine, oldPos, {x + cos(angle * DEG2RAD) * crossOffset, y + sin(angle * DEG2RAD) * crossOffset});
-    if (cross.x != -1 && cross.y != -1)
-    {
-      cout << "reached finish track" << endl;
-      fitness += 10000;
-      foundPath = true;
     }
   }
 }
